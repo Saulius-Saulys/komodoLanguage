@@ -7,7 +7,7 @@ module.exports.generate = function(semantics) {
 
         Assignment_full: (type, variable, _1, value, _2) => new Tree.Assignment(type.sourceString, variable.toTree(), value.toTree()),
         Assignment_withoutType: (variable, _1, value, _2) => new Tree.Assignment(null, variable.toTree(), value.toTree()),
-        Id: function (x, y) { return new Tree.SymbolClass(this.sourceString, null) },
+        Id: function (x) { return new Tree.SymbolClass(this.sourceString, null) },
 
         Add: (op1, _, op2) => new Tree.Operation('+', op1.toTree(), op2.toTree()),
         Subtract: (op1, _, op2) => new Tree.Operation('-', op1.toTree(), op2.toTree()),
@@ -27,7 +27,6 @@ module.exports.generate = function(semantics) {
         String: (quotes1, text, quotes2) => new Tree.VariableClass("string", text.sourceString),
         Cypher: (_1, value, _2) => new  Tree.VariableClass("cypher", value.sourceString),
 
-        Cluster: (_, values, __) => values.toTree(),
         Brackets: (_, values, __) => values.toTree(),
 
         Body: (_, body, _1) => new Tree.Body(body.toTree()),
@@ -47,8 +46,6 @@ module.exports.generate = function(semantics) {
         For: (_1, _2, assignment, condition, _3, increment, _5, loopBody) => new Tree.ForLoop(assignment.toTree(), condition.toTree(), increment.toTree(), loopBody.toTree()),
 
         While: (_1, condition, body) => new Tree.WhileLoop(condition.toTree(), body.toTree()),
-
-        Declaration: (type, name, _1 ) => new Tree.VariableClass(type.sourceString, name.sourceString),
 
         Bool: (val) => new Tree.VariableClass("bool", val.sourceString)
     });
