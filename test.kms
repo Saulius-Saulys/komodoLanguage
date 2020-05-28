@@ -1,9 +1,9 @@
 log("Hello World")
 log(2+2)
 
-if ? {1 < 0} : {
+1 < 0 ? {
     log("Skeet skeet")
-} else {
+} : {
     log("ya yeeet")
 }
 

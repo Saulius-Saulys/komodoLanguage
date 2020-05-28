@@ -40,7 +40,7 @@ module.exports.generate = function(semantics) {
 
         Arguments: args => args.asIteration().toTree(),
 
-        If: (_1, condition, _2, thenBody, __, elseBody) => { return new Tree.IfStatement(condition.toTree(), thenBody.toTree(), elseBody ? elseBody.toTree()[0] : null) },
+        If: (condition, _1, thenBody, _2, elseBody) => { return new Tree.IfStatement(condition.toTree(), thenBody.toTree(), elseBody ? elseBody.toTree()[0] : null) },
 
         For: (_1, _2, assignment, condition, _3, increment, _5, loopBody) => new Tree.ForLoop(assignment.toTree(), condition.toTree(), increment.toTree(), loopBody.toTree()),
     });

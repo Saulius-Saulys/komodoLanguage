@@ -38,7 +38,7 @@ KsmJs {
     FunctionDefinition  = Id "(" Params ")" "=>" Body
     Params = ListOf<Id, ",">
 
-    If = "if ?" Brackets ":" Body ("else" Body)?
+    If = Expression "?" Body ":" Body?
     For = "for" "(" Assignment Expression SemiColon Expression ")" Body
 
     Type = "string" | "float" | "int" | "void"
