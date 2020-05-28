@@ -14,20 +14,20 @@ KsmJs {
 
     Return = "return" Expression SemiColon
 
-    Operation =  Add | Sub | Mul | Div | Incr | Eq | Neq | Lt | Lte | Gt | Gte | Not | Cluster | FunctionCall | Id | Value | Cluster
+    Operation =  Add | Subtract | Multiply | Divide | Increase | Equal | NotEqual | LessThen | LowerThenOrEqual | Greater | GreaterThenOrEqual | Not | Cluster | FunctionCall | Id | Value | Cluster
     
     Add = Expression "+" Expression
-    Sub = Expression "-" Expression
-    Mul = Expression "*" Expression
-    Div = Expression "/" Expression
-    Eq  = Expression "==" Expression
-    Neq = Expression "!=" Expression
-    Lt  = Expression "<"  Expression
-    Lte = Expression "<=" Expression
-    Gt  = Expression ">"  Expression
-    Gte = Expression ">=" Expression
+    Subtract = Expression "-" Expression
+    Multiply = Expression "*" Expression
+    Divide = Expression "/" Expression
+    Equal  = Expression "==" Expression
+    NotEqual = Expression "!=" Expression
+    LessThen  = Expression "<"  Expression
+    LowerThenOrEqual = Expression "<=" Expression
+    Greater  = Expression ">"  Expression
+    GreaterThenOrEqual = Expression ">=" Expression
     Not = "!" Expression
-    Incr = Expression "++"
+    Increase = Expression "++"
 
     Value =  Bool | Number | String | Cypher
 

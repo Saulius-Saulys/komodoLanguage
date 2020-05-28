@@ -9,19 +9,19 @@ module.exports.generate = function(semantics) {
         Assignment_withoutType: (variable, _1, value, _2) => new Tree.Assignment(null, variable.toTree(), value.toTree()),
         Id: function (x, y) { return new Tree.SymbolClass(this.sourceString, null) },
 
-        Add: (op1, _, op2) => new Tree.Operation('add', op1.toTree(), op2.toTree()),
-        Sub: (op1, _, op2) => new Tree.Operation('sub', op1.toTree(), op2.toTree()),
-        Mul: (op1, _, op2) => new Tree.Operation('mul', op1.toTree(), op2.toTree()),
-        Div: (op1, _, op2) => new Tree.Operation('div', op1.toTree(), op2.toTree()),
-        Eq: (op1, _, op2)  => new Tree.Operation('eq', op1.toTree(), op2.toTree()),
-        Neq: (op1, _, op2) => new Tree.Operation('neq', op1.toTree(), op2.toTree()),
-        Gt: (op1, _, op2)  => new Tree.Operation('gt', op1.toTree(), op2.toTree()),
-        Lt: (op1, _, op2)  => new Tree.Operation('lt', op1.toTree(), op2.toTree()),
-        Gte: (op1, _, op2) => new Tree.Operation('gte', op1.toTree(), op2.toTree()),
-        Lte: (op1, _, op2) => new Tree.Operation('lte', op1.toTree(), op2.toTree()),
+        Add: (op1, _, op2) => new Tree.Operation('+', op1.toTree(), op2.toTree()),
+        Subtract: (op1, _, op2) => new Tree.Operation('-', op1.toTree(), op2.toTree()),
+        Multiply: (op1, _, op2) => new Tree.Operation('*', op1.toTree(), op2.toTree()),
+        Divide: (op1, _, op2) => new Tree.Operation('/', op1.toTree(), op2.toTree()),
+        Equal: (op1, _, op2)  => new Tree.Operation('==', op1.toTree(), op2.toTree()),
+        NotEqual: (op1, _, op2) => new Tree.Operation('!=', op1.toTree(), op2.toTree()),
+        Greater: (op1, _, op2)  => new Tree.Operation('>', op1.toTree(), op2.toTree()),
+        LessThen: (op1, _, op2)  => new Tree.Operation('<', op1.toTree(), op2.toTree()),
+        GreaterThenOrEqual: (op1, _, op2) => new Tree.Operation('>=', op1.toTree(), op2.toTree()),
+        LowerThenOrEqual: (op1, _, op2) => new Tree.Operation('<=', op1.toTree(), op2.toTree()),
 
         Not: (_, op) => new Tree.Op('not', op.toTree()),
-        Incr: (op, _) => new Tree.Op('incr', op.toTree()),
+        Increase: (op, _) => new Tree.Op('increase', op.toTree()),
 
         Number: num => new Tree.VariableClass("int", num.calculate()),
         String: (quotes1, text, quotes2) => new Tree.VariableClass("string", text.sourceString),
@@ -57,13 +57,13 @@ module.exports.generate = function(semantics) {
         Add: function (op1, _, op2) {
             return op1.calculate() + op2.calculate();
         },
-        Sub: function (op1, _, op2) {
+        Subtract: function (op1, _, op2) {
             return op1.calculate() - op2.calculate();
         },
-        Mul: function (op1, _, op2) {
+        Multiply: function (op1, _, op2) {
             return op1.calculate() * op2.calculate();
         },
-        Div: function (op1, _, op2) {
+        Divide: function (op1, _, op2) {
             return op1.calculate() / op2.calculate();
         },
         Cluster: function (_1, op, _2) {

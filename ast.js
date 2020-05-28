@@ -14,16 +14,6 @@ class Scope {
     }
 
     setSymbol(symbol, obj) {
-        let hIndex = valuesHolder.findIndex(hVal => hVal.name === symbol.name && hVal.scope === this.parentScope);
-
-        if (hIndex >= 0) {
-            obj.previousValue = valuesHolder[hIndex].value;
-            obj.prepreviousValue = valuesHolder[hIndex].previousValue;
-
-            valuesHolder[hIndex].previousValue = valuesHolder[hIndex].value
-            valuesHolder[hIndex].value = obj.value
-        }
-
         this.store[symbol.name] = obj;
         return this.store[symbol.name];
     }
@@ -41,7 +31,7 @@ class Scope {
 
 class VariableClass {
     constructor(type, value) {
-        if(type === "cypher"){
+        if (type === "cypher") {
             this.value = encrypt(value);
             this.type = type;
         }
@@ -56,12 +46,9 @@ class VariableClass {
     }
 }
 
-// Class for number
 class NumberClass {
     constructor(value) {
         this.value = value;
-        this.previousValue = value;
-        this.prepreviousValue = value;
     }
 
     resolve(scope) {
@@ -69,7 +56,6 @@ class NumberClass {
     }
 }
 
-// Class for symbol
 class SymbolClass {
     constructor(name) {
         this.name = name;
@@ -89,7 +75,18 @@ class Assignment {
 
     resolve(scope) {
         const index = valuesHolder.findIndex((a) => a.name == this.symbol.name);
-        if(this.type !== "cypher" && ((this.type === "double" || this.type === "int") && isNaN(this.value.resolve(scope).value)) || (this.type === "string" && !isNaN(this.value.resolve(scope).value))){
+        if (
+            this.type !== "cypher" &&
+            (
+                (
+                    this.type === "double" || this.type === "int"
+                ) &&
+                isNaN(this.value.resolve(scope).value)
+            ) ||
+            (
+                this.type === "string" && !isNaN(this.value.resolve(scope).value)
+            )
+        ){
             throw new Error(`The assigned value is not supported by type ${this.type}`)
         }
         if(index >= 0){
@@ -120,28 +117,7 @@ class Operation {
         var op1 = this.op1.resolve(scope).value;
         var op2 = this.op2.resolve(scope).value;
 
-        switch (this.operation) {
-            case 'add':
-                return new NumberClass(op1 + op2);
-            case 'sub':
-                return new NumberClass(op1 - op2);
-            case 'mul':
-                return new NumberClass(op1 * op2);
-            case 'div':
-                return new NumberClass(op1 / op2);
-            case 'eq':
-                return new NumberClass(op1 == op2);
-            case 'neq':
-                return new NumberClass(op1 != op2);
-            case 'gt':
-                return new NumberClass(op1 > op2);
-            case 'lt':
-                return new NumberClass(op1 < op2);
-            case 'gte':
-                return new NumberClass(op1 >= op2);
-            case 'lte':
-                return new NumberClass(op1 <= op2);
-        }
+        return new NumberClass(eval(`${op1} ${this.operation} ${op2}`));
     }
 }
 
@@ -177,7 +153,6 @@ class FunctionDef {
     }
 }
 
-// Class for body
 class Body {
     constructor(body) {
         this.statements = body;
@@ -217,15 +192,12 @@ class WhileLoop {
 
     resolve(scope) {
         while(true) {
-
             if(!this.condition.resolve(scope).value) {
                 break;
             }
 
-            // Lets do something whitin body
             this.body.resolve(scope);
         }
-
     }
 }
 
@@ -238,25 +210,16 @@ class ForLoop {
     }
 
     resolve(scope) {
-        // Lets assing value 
         this.assingment.resolve(scope);
 
         var symbol = new SymbolClass(this.assingment.symbol.name);
-
-        // Repeat until contition is met
         while(true) {
-
             if(!this.condition.resolve(scope).value) {
                 break;
             }
-
-            // Lets do something whitin body
             this.body.resolve(scope);
-
-            // Increment symbol
             scope.setSymbol(symbol, this.increment.resolve(scope))
         }
-
     }
 }
 
@@ -272,7 +235,7 @@ class Op {
         switch (this.operation) {
             case 'not':
                 return new NumberClass(!op);
-            case 'incr':
+            case 'increase':
                 return new NumberClass(op + 1);
         }
     }
