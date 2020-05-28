@@ -9,6 +9,7 @@
   "author": "Edgaras Lopatovas Martynas Stumbra Saulius Saulys",
   "license": "MIT",
   "dependencies": {
+    "crypto-js": "^4.0.0",
     "ohm-js": "^0.14.0"
   }
 }

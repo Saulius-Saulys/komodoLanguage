@@ -23,8 +23,9 @@ module.exports.generate = function(semantics) {
         Not: (_, op) => new Tree.Op('not', op.toTree()),
         Incr: (op, _) => new Tree.Op('incr', op.toTree()),
 
-        Number: num => new Tree.NumberClass(num.calculate()),
-        String: (quotes1, text, quotes2) => new Tree.NumberClass(text.sourceString),
+        Number: num => new Tree.VariableClass("int", num.calculate()),
+        String: (quotes1, text, quotes2) => new Tree.VariableClass("string", text.sourceString),
+        Cypher: (_1, value, _2) => new  Tree.VariableClass("cypher", value.sourceString),
 
         Cluster: (_, values, __) => values.toTree(),
         Brackets: (_, values, __) => values.toTree(),
@@ -47,7 +48,9 @@ module.exports.generate = function(semantics) {
 
         While: (_1, condition, body) => new Tree.WhileLoop(condition.toTree(), body.toTree()),
 
-        Declaration: (type, name, _1 ) => new Tree.VariableClass(type.sourceString, name.sourceString)
+        Declaration: (type, name, _1 ) => new Tree.VariableClass(type.sourceString, name.sourceString),
+
+        Bool: (val) => new Tree.VariableClass("bool", val.sourceString)
     });
 
     var Calculator = semantics.addOperation('calculate', {

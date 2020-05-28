@@ -1,4 +1,7 @@
+const CryptoJS = require('crypto-js');
 let valuesHolder = [];
+
+const encrypt = (value) => CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(value));
 
 class Scope {
     constructor(parentScope) {
@@ -38,8 +41,14 @@ class Scope {
 
 class VariableClass {
     constructor(type, value) {
-        this.value = value;
-        this.type = type;
+        if(type === "cypher"){
+            this.value = encrypt(value);
+            this.type = type;
+        }
+        else {
+            this.value = value;
+            this.type = type;
+        }
     }
 
     resolve(scope) {
@@ -79,11 +88,16 @@ class Assignment {
     }
 
     resolve(scope) {
-        if (!valuesHolder.find(obj => obj.name === this.symbol.name && obj.scope === scope.parentScope)) {
+        const index = valuesHolder.findIndex((a) => a.name == this.symbol.name);
+        if(index >= 0){
+            valuesHolder[index] = {
+                ...valuesHolder[index], value: this.value.resolve(scope).value
+            }
+        }
+        else {
             valuesHolder.push({
                 name: this.symbol.name,
                 value: this.value.resolve(scope).value,
-                previousValue: this.value.resolve(scope).value,
                 scope: scope.parentScope,
                 type: this.type
             });
