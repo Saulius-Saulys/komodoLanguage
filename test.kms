@@ -13,11 +13,21 @@ naujasZodis() =>
     return "zodis";
 }
 
+int n = 5;
+
+while(n < 10){
+    log("Veik naxuj")
+    log(n)
+    n = n + 1;
+}
+
 log(naujasZodis())
 
-n = 10;
-
-for (j = 0; j < n; j++) {
+int fss;
+fss = 15;
+int n = 10;
+log(fss)
+for (int j = 0; j < n; j++) {
     log(j+1)
 }
 

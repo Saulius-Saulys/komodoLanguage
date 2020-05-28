@@ -5,7 +5,8 @@ module.exports.generate = function(semantics) {
 
         Program: body => new Tree.Body(body.toTree()),
 
-        Assignment: (variable, _1, value, _2) => new Tree.Assignment(variable.toTree(), value.toTree()),
+        Assignment_full: (type, variable, _1, value, _2) => new Tree.Assignment(type.sourceString, variable.toTree(), value.toTree()),
+        Assignment_withoutType: (variable, _1, value, _2) => new Tree.Assignment(null, variable.toTree(), value.toTree()),
         Id: function (x, y) { return new Tree.SymbolClass(this.sourceString, null) },
 
         Add: (op1, _, op2) => new Tree.Operation('add', op1.toTree(), op2.toTree()),
@@ -43,6 +44,10 @@ module.exports.generate = function(semantics) {
         If: (condition, _1, thenBody, _2, elseBody) => { return new Tree.IfStatement(condition.toTree(), thenBody.toTree(), elseBody ? elseBody.toTree()[0] : null) },
 
         For: (_1, _2, assignment, condition, _3, increment, _5, loopBody) => new Tree.ForLoop(assignment.toTree(), condition.toTree(), increment.toTree(), loopBody.toTree()),
+
+        While: (_1, condition, body) => new Tree.WhileLoop(condition.toTree(), body.toTree()),
+
+        Declaration: (type, name, _1 ) => new Tree.VariableClass(type.sourceString, name.sourceString)
     });
 
     var Calculator = semantics.addOperation('calculate', {

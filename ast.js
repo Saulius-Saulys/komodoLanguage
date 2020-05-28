@@ -36,6 +36,17 @@ class Scope {
     }
 }
 
+class VariableClass {
+    constructor(type, value) {
+        this.value = value;
+        this.type = type;
+    }
+
+    resolve(scope) {
+        return this;
+    }
+}
+
 // Class for number
 class NumberClass {
     constructor(value) {
@@ -61,9 +72,10 @@ class SymbolClass {
 }
 
 class Assignment {
-    constructor(symbol, value) {
+    constructor(type, symbol, value) {
         this.symbol = symbol;
         this.value = value;
+        this.type = type;
     }
 
     resolve(scope) {
@@ -72,7 +84,8 @@ class Assignment {
                 name: this.symbol.name,
                 value: this.value.resolve(scope).value,
                 previousValue: this.value.resolve(scope).value,
-                scope: scope.parentScope
+                scope: scope.parentScope,
+                type: this.type
             });
         }
         return scope.setSymbol(this.symbol, this.value.resolve(scope));
@@ -179,6 +192,26 @@ class IfStatement {
     }
 }
 
+class WhileLoop {
+    constructor(condition, body) {
+        this.condition = condition;
+        this.body = body;
+    }
+
+    resolve(scope) {
+        while(true) {
+
+            if(!this.condition.resolve(scope).value) {
+                break;
+            }
+
+            // Lets do something whitin body
+            this.body.resolve(scope);
+        }
+
+    }
+}
+
 class ForLoop {
     constructor(assingment, condition, increment, body) {
         this.assingment = assingment;
@@ -188,7 +221,6 @@ class ForLoop {
     }
 
     resolve(scope) {
-
         // Lets assing value 
         this.assingment.resolve(scope);
 
@@ -251,5 +283,7 @@ module.exports = {
     IfStatement: IfStatement,
     ForLoop: ForLoop,
     Op: Op,
-    Return: Return
+    Return: Return,
+    VariableClass: VariableClass,
+    WhileLoop: WhileLoop
 };  

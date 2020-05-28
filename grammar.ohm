@@ -1,11 +1,13 @@
 KsmJs {
     Program = Expression*
-    Expression = FunctionDefinition | For | If | Body | Return | Assignment | Operation | Cluster | Id | Number | String | Cluster
+    Expression = FunctionDefinition | While | For | If | Body | Return | Assignment | Declaration | Operation | Cluster | Id | Number | String | Cluster | Type
     
     DoubleQuotes = "\""
     SemiColon = ";"
 
-    Assignment = Id "=" Expression SemiColon
+    Declaration = Type letter+ SemiColon
+    Assignment = Type Id "=" Expression SemiColon -- full
+        | Id "=" Expression SemiColon -- withoutType
     Id = letter (letter|digit)*
 
     Return = "return" Expression SemiColon
@@ -40,6 +42,7 @@ KsmJs {
 
     If = Expression "?" Body ":" Body?
     For = "for" "(" Assignment Expression SemiColon Expression ")" Body
+    While = "while" Cluster Body
 
     Type = "string" | "float" | "int" | "void"
 
