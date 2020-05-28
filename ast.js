@@ -44,16 +44,6 @@ class VariableClass {
     }
 }
 
-class NumberClass {
-    constructor(value) {
-        this.value = value;
-    }
-
-    resolve(scope) {
-        return this;
-    }
-}
-
 class SymbolClass {
     constructor(name) {
         this.name = name;
@@ -113,7 +103,7 @@ class Operation {
     }
 
     resolve(scope) {
-        return new NumberClass(eval(`${this.op1.resolve(scope).value} ${this.operation} ${this.op2.resolve(scope).value}`));
+        return new VariableClass("bool", eval(`${this.op1.resolve(scope).value} ${this.operation} ${this.op2.resolve(scope).value}`));
     }
 }
 
@@ -222,9 +212,9 @@ class Op {
 
     resolve(scope) {
         if (this.operation === 'not') {
-            return new NumberClass(!op);
+            return new VariableClass("bool", !op);
         } else if (this.operation === 'increase') {
-            return new NumberClass(this.op.resolve(scope).value + 1);
+            return new VariableClass("int", this.op.resolve(scope).value + 1);
         }
     }
 }
@@ -241,7 +231,6 @@ class Return {
 
 module.exports = {
     Scope: Scope,
-    NumberClass: NumberClass,
     SymbolClass: SymbolClass,
     Assignment: Assignment,
     Operation: Operation,

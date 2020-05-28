@@ -1,41 +1,30 @@
-var ohm = require('ohm-js');    		// core - ohm js library
-var fs  = require('fs');        		// used for file reading
-var ast = require('./ast.js')		// ast modules
-var smn = require('./semantics')	// semantics
+const ohm = require('ohm-js');
+const fs  = require('fs');
+const AST = require('./ast.js');
+const semantic = require('./semantics');
 const CryptoJS = require('crypto-js');
 
 const decrypt = (value) => CryptoJS.enc.Base64.parse(value).toString(CryptoJS.enc.Utf8);
 
-var Scope 	= ast.Scope;		// scope
-var Symbol 	= ast.SymbolClass; 	// symbols of global scope
-var Number 	= ast.NumberClass; 	// original values
-var VariableClass = ast.VariableClass
+const Scope = AST.Scope;
+const Symbol = AST.SymbolClass;
+const VariableClass = AST.VariableClass
 
-// Read grammar file and create grammar
-var grammar = ohm.grammar(
+const grammar = ohm.grammar(
     fs.readFileSync('./grammar.ohm').toString()
 );
 
-// Creating semantics
-var semantics  = grammar.createSemantics();
-var astBuilder = smn.generate(semantics).TreeBuilder;
+const semantics  = grammar.createSemantics();
+const astBuilder = semantic.generate(semantics).ASTBuilder;
 
-
-// Creating a tree from a file
-let filename = process.argv.slice(2).toString();
-let matchResult = grammar.match(
+const filename = process.argv.slice(2).toString();
+const matchResult = grammar.match(
     fs.readFileSync(filename).toString()
 );
 
-// Grammar match failed, stoping program...
-if (matchResult.failed()) {
-    return console.log("Failed to match " + filename + "\n" +  matchResult.message);
-}
+const tree = astBuilder(matchResult).resolve();
 
-var tree = astBuilder(matchResult).toTree();
-
-// Global scope
-let globalScope = new Scope(null);
+const globalScope = new Scope(null);
 
 globalScope.setSymbol(new Symbol("log"), function (arg) {
     console.log(arg.value);
@@ -47,23 +36,20 @@ globalScope.setSymbol(new Symbol("logLine"), function (arg) {
     return arg;
 });
 
-globalScope.setSymbol(new Symbol("toInt"), function (...arg) {
-    var x = arg.map(o => o['value']);
-    var tryParse = parseInt(x);
+globalScope.setSymbol(new Symbol("toInt"), function (x) {
+    var tryParse = parseInt(x.value);
     if(isNaN(tryParse)){
         throw new Error("Unable to parse to int");
     }
     return new VariableClass("int", tryParse);
 });
 
-globalScope.setSymbol(new Symbol("toString"), function (...arg) {
-    var x = arg.map(o => o['value']);
-    return new VariableClass("string", x.toString());
+globalScope.setSymbol(new Symbol("toString"), function (x) {
+    return new VariableClass("string", x.value.toString());
 });
 
-globalScope.setSymbol(new Symbol("toDouble"), function (...arg) {
-    var x = arg.map(o => o['value']);
-    var tryParse = parseFloat(x);
+globalScope.setSymbol(new Symbol("toDouble"), function (x) {
+    var tryParse = parseFloat(x.value);
     if(isNaN(tryParse)){
         throw new Error("Unable to parse to double");
     }
@@ -72,8 +58,7 @@ globalScope.setSymbol(new Symbol("toDouble"), function (...arg) {
 });
 
 globalScope.setSymbol(new Symbol("decrypt"), function (x) {
-    return new Number(decrypt(x.value));
+    return new VariableClass("cypher_Decrypt", decrypt(x.value));
 });
 
-// Resolving global scope
 tree.resolve(globalScope);

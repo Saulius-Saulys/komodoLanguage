@@ -1,4 +1,4 @@
-KsmJs {
+Komodo {
     Program = Expression*
     Expression = FunctionDefinition | Bool | While | For | If | Body | Return | Assignment | Operation | Brackets | Id | Number | String | Type
 
