@@ -43,26 +43,6 @@ globalScope.setSymbol(new Symbol("logLine"), function (arg) {
     return arg;
 });
 
-globalScope.setSymbol(new Symbol("max"), function (...arg) {
-    var x = arg.map(o => o['value']);
-    var max = Math.max(...x);
-    return new Number(max);
-});
-
-globalScope.setSymbol(new Symbol("min"), function (...arg) {
-    var x = arg.map(o => o['value']);
-    var min = Math.min(...x);
-    return new Number(min);
-});
-
-globalScope.setSymbol(new Symbol("previous"), function (arg) {
-    return new Number(arg.previousValue);
-});
-
-globalScope.setSymbol(new Symbol("preprevious"), function (arg) {
-    return new Number(arg.prepreviousValue);
-});
-
 globalScope.setSymbol(new Symbol("toInt"), function (...arg) {
     var x = arg.map(o => o['value']);
     var int = parseInt(x);

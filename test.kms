@@ -1,6 +1,11 @@
 log("------------------ Fibonacci Example ------------------")
+
 recursiveFibonacci (i) => {
-    i <= 2 ? {return 1;} : {return 2;}
+    (i <= 2) ? {
+        return 1;
+    } : {
+        return recursiveFibonacci(i-1) + recursiveFibonacci(i-2);
+    }
 }
 
 loopFibonacci (n) => {

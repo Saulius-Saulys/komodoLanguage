@@ -40,17 +40,17 @@ KsmJs {
     FunctionDefinition  = Id "(" Params ")" "=>" Body
     Params = ListOf<Id, ",">
 
-    If = Expression "?" Body ":" Body?
+    If = "(" Operation ")" "?" Body ":" Body?
     For = "for" "(" Assignment Expression SemiColon Expression ")" Body
     While = "while" Cluster Body
 
-    Type = "string" | "float" | "int" | "void"
+    Type = "string" | "float" | "int" | "cypher"
 
     Number = float | int
     int = digit+
     float = digit+ "." digit+
     String = DoubleQuotes (~DoubleQuotes any)+ DoubleQuotes
 
-    space := "\t" | " " | "\n" | "\r\n" | comment
+    space += comment
     comment = "#" (~"\n" any)*
 }
