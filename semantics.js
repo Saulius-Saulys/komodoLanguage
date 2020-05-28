@@ -23,7 +23,7 @@ module.exports.generate = function(semantics) {
         Not: (_, op) => new Tree.Op('not', op.toTree()),
         Increase: (op, _) => new Tree.Op('increase', op.toTree()),
 
-        Number: num => new Tree.VariableClass("int", num.sourceString),
+        Number: num => new Tree.VariableClass("int", parseInt(num.sourceString)),
         String: (quotes1, text, quotes2) => new Tree.VariableClass("string", text.sourceString),
         Cypher: (_1, value, _2) => new  Tree.VariableClass("cypher", value.sourceString),
 
