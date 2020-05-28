@@ -1,0 +1,53 @@
+KsmJs {
+    Program = Expression*
+    Expression = FunctionDefinition | For | If | Body | Return | Assignment | Operation | Cluster | Id | Number | String | Cluster
+    
+    DoubleQuotes = "\""
+    SemiColon = ";"
+
+    Assignment = Id "=" Expression SemiColon
+    Id = letter (letter|digit)*
+
+    Return = "return" Expression SemiColon
+
+    Operation =  Add | Sub | Mul | Div | Incr | Eq | Neq | Lt | Lte | Gt | Gte | Not | Cluster | FunctionCall | Id | Value | Cluster
+    
+    Add = Expression "+" Expression
+    Sub = Expression "-" Expression
+    Mul = Expression "*" Expression
+    Div = Expression "/" Expression
+    Eq  = Expression "==" Expression
+    Neq = Expression "!=" Expression
+    Lt  = Expression "<"  Expression
+    Lte = Expression "<=" Expression
+    Gt  = Expression ">"  Expression
+    Gte = Expression ">=" Expression
+    Not = "!" Expression
+    Incr = Expression "++"
+
+    Value = Number | String
+
+    Cluster = "(" Expression ")"
+    Brackets = "{" Expression "}"
+
+    Body = "{" Expression* "}"
+
+    FunctionCall = Id "(" Arguments ")"
+    Arguments = ListOf<Expression, ",">
+
+    FunctionDefinition  = Id "(" Params ")" "=>" Body
+    Params = ListOf<Id, ",">
+
+    If = "if ?" Brackets ":" Body ("else" Body)?
+    For = "for" "(" Assignment Expression SemiColon Expression ")" Body
+
+    Type = "string" | "float" | "int" | "void"
+
+    Number = float | int
+    int = digit+
+    float = digit+ "." digit+
+    String = DoubleQuotes (~DoubleQuotes any)+ DoubleQuotes
+
+    space := "\t" | " " | "\n" | "\r\n" | comment
+    comment = "#" (~"\n" any)*
+}

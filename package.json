@@ -1,0 +1,14 @@
+{
+  "name": "komodo.js",
+  "version": "1.0.0",
+  "description": "Komodo.js programming language based on Ohm.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Edgaras Lopatovas Martynas Stumbra Saulius Saulys",
+  "license": "MIT",
+  "dependencies": {
+    "ohm-js": "^0.14.0"
+  }
+}

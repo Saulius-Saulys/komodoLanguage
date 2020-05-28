@@ -1,0 +1,31 @@
+log("Hello World")
+log(2+2)
+
+if ? {1 < 0} : {
+    log("Skeet skeet")
+} else {
+    log("ya yeeet")
+}
+
+naujasZodis() =>
+{
+    log("naujas")
+    return "zodis";
+}
+
+log(naujasZodis())
+
+n = 10;
+
+for (j = 0; j < n; j++) {
+    log(j+1)
+}
+
+log(max(10,20,30,40))
+log(min(10,20,30,40))
+log(toInt("1"))
+log(toString(1))
+
+logLine("dasd")
+
+log(toDouble("1.2"))
