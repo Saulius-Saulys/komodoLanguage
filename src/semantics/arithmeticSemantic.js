@@ -1,4 +1,4 @@
-const AST = require('./ast.js');
+const AST = require('../ast/ast.js');
 
 const arithmeticSemantic = {
     Add: function(left, _, right) {
@@ -34,4 +34,4 @@ const arithmeticSemantic = {
 
 }
 
-module.exports = {arithmeticSemantic: arithmeticSemantic}
+module.exports = {...arithmeticSemantic}

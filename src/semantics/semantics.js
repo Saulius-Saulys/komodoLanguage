@@ -1,5 +1,6 @@
-const AST = require('./ast.js');
-const ArithmeticSemantics = require('./arithmeticSemantic');
+const AST = require('../ast/ast.js');
+const arithmeticSemantics = require('./arithmeticSemantic');
+const variableSemantics = require('./variableSemantic');
 
 module.exports.generate = function (semantics) {
     var ASTBuilder = semantics.addOperation('resolve', {
@@ -21,16 +22,6 @@ module.exports.generate = function (semantics) {
         },
         Increase: function(op, _) {
             return new AST.Op('increase', op.resolve())
-        },
-
-        Number: function(num) {
-            return new AST.VariableClass("int", parseInt(num.sourceString))
-        },
-        String: function(quotes1, text, quotes2) {
-            return new AST.VariableClass("string", text.sourceString)
-        },
-        Cypher: function(_1, value, _2) {
-            return new AST.VariableClass("cypher", value.sourceString)
         },
 
         Brackets: function(_, values, __) {
@@ -72,11 +63,8 @@ module.exports.generate = function (semantics) {
         While: function(_1, condition, body) {
             return new AST.WhileLoop(condition.resolve(), body.resolve())
         },
-
-        Bool: function(val) {
-             return new AST.VariableClass("bool", val.sourceString)
-        },
-        ...ArithmeticSemantics.arithmeticSemantic
+        ...arithmeticSemantics,
+        ...variableSemantics
     });
 
     return {
