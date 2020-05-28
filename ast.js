@@ -89,6 +89,9 @@ class Assignment {
 
     resolve(scope) {
         const index = valuesHolder.findIndex((a) => a.name == this.symbol.name);
+        if(this.type !== "cypher" && ((this.type === "double" || this.type === "int") && isNaN(this.value.resolve(scope).value)) || (this.type === "string" && !isNaN(this.value.resolve(scope).value))){
+            throw new Error(`The assigned value is not supported by type ${this.type}`)
+        }
         if(index >= 0){
             valuesHolder[index] = {
                 ...valuesHolder[index], value: this.value.resolve(scope).value

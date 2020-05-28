@@ -10,9 +10,9 @@ recursiveFibonacci (i) => {
 
 loopFibonacci (n) => {
 
-    previouspreviousNumber = 0;
-    previousNumber = 0;
-    currentNumber = 1;
+    int previouspreviousNumber = 0;
+    int previousNumber = 0;
+    int currentNumber = 1;
     int i = 1;
 
     while(i < n) {
@@ -25,7 +25,7 @@ loopFibonacci (n) => {
     return currentNumber;
 }
 
-n = 7;
+int n = 7;
 
 log("Fibonacci using loop")
 log(loopFibonacci(n))
