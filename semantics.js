@@ -23,7 +23,7 @@ module.exports.generate = function(semantics) {
         Not: (_, op) => new Tree.Op('not', op.toTree()),
         Increase: (op, _) => new Tree.Op('increase', op.toTree()),
 
-        Number: num => new Tree.VariableClass("int", num.calculate()),
+        Number: num => new Tree.VariableClass("int", num.sourceString),
         String: (quotes1, text, quotes2) => new Tree.VariableClass("string", text.sourceString),
         Cypher: (_1, value, _2) => new  Tree.VariableClass("cypher", value.sourceString),
 
@@ -53,32 +53,7 @@ module.exports.generate = function(semantics) {
         Bool: (val) => new Tree.VariableClass("bool", val.sourceString)
     });
 
-    var Calculator = semantics.addOperation('calculate', {
-        Add: function (op1, _, op2) {
-            return op1.calculate() + op2.calculate();
-        },
-        Subtract: function (op1, _, op2) {
-            return op1.calculate() - op2.calculate();
-        },
-        Multiply: function (op1, _, op2) {
-            return op1.calculate() * op2.calculate();
-        },
-        Divide: function (op1, _, op2) {
-            return op1.calculate() / op2.calculate();
-        },
-        Cluster: function (_1, op, _2) {
-            return op.calculate();
-        },
-        int: function (digit) {
-            return parseInt(this.sourceString, 10);
-        },
-        float: function (digit1, dot, digit1) {
-            return parseFloat(this.sourceString);
-        }
-    });
-
     return {
-        Calculator: Calculator,
         TreeBuilder: TreeBuilder
     };
 };

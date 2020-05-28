@@ -21,10 +21,8 @@ class Scope {
     getSymbol(name) {
         if (this.store[name]) {
             return this.store[name];
-        } else if (this.parentScope) {
-            return this.parentScope.getSymbol(name);
         } else {
-            return null;
+            return this.parentScope.getSymbol(name);
         }
     }
 }
@@ -79,22 +77,23 @@ class Assignment {
             this.type !== "cypher" &&
             (
                 (
-                    this.type === "double" || this.type === "int"
+                    this.type === "double" ||
+                    this.type === "int"
                 ) &&
                 isNaN(this.value.resolve(scope).value)
             ) ||
             (
-                this.type === "string" && !isNaN(this.value.resolve(scope).value)
+                this.type === "string" &&
+                !isNaN(this.value.resolve(scope).value)
             )
-        ){
+        ) {
             throw new Error(`The assigned value is not supported by type ${this.type}`)
         }
-        if(index >= 0){
+        if (index >= 0) {
             valuesHolder[index] = {
                 ...valuesHolder[index], value: this.value.resolve(scope).value
             }
-        }
-        else {
+        } else {
             valuesHolder.push({
                 name: this.symbol.name,
                 value: this.value.resolve(scope).value,
@@ -114,10 +113,7 @@ class Operation {
     }
 
     resolve(scope) {
-        var op1 = this.op1.resolve(scope).value;
-        var op2 = this.op2.resolve(scope).value;
-
-        return new NumberClass(eval(`${op1} ${this.operation} ${op2}`));
+        return new NumberClass(eval(`${this.op1.resolve(scope).value} ${this.operation} ${this.op2.resolve(scope).value}`));
     }
 }
 
@@ -172,27 +168,23 @@ class IfStatement {
     }
 
     resolve(scope) {
-        let value = this.condition.resolve(scope);
-
-        if (value.value) {
+        if (this.condition.resolve(scope).value) {
             return this.thenBody.resolve(scope);
-        } else if (this.elseBody) {
-            return this.elseBody.resolve(scope);
         } else {
-            return new NumberClass(false);
+            return this.elseBody.resolve(scope);
         }
     }
 }
 
 class WhileLoop {
-    constructor(condition, body) {
+    constructor (condition, body) {
         this.condition = condition;
         this.body = body;
     }
 
-    resolve(scope) {
-        while(true) {
-            if(!this.condition.resolve(scope).value) {
+    resolve (scope) {
+        while (true) {
+            if (!this.condition.resolve(scope).value) {
                 break;
             }
 
@@ -202,23 +194,22 @@ class WhileLoop {
 }
 
 class ForLoop {
-    constructor(assingment, condition, increment, body) {
-        this.assingment = assingment;
+    constructor (assignment, condition, increment, body) {
+        this.assignment = assignment;
         this.condition = condition;
         this.increment = increment;
         this.body = body;
     }
 
     resolve(scope) {
-        this.assingment.resolve(scope);
+        this.assignment.resolve(scope);
 
-        var symbol = new SymbolClass(this.assingment.symbol.name);
         while(true) {
-            if(!this.condition.resolve(scope).value) {
+            if (!this.condition.resolve(scope).value) {
                 break;
             }
             this.body.resolve(scope);
-            scope.setSymbol(symbol, this.increment.resolve(scope))
+            scope.setSymbol(new SymbolClass(this.assignment.symbol.name), this.increment.resolve(scope))
         }
     }
 }
@@ -230,13 +221,10 @@ class Op {
     }
 
     resolve(scope) {
-        var op = this.op.resolve(scope).value;
-
-        switch (this.operation) {
-            case 'not':
-                return new NumberClass(!op);
-            case 'increase':
-                return new NumberClass(op + 1);
+        if (this.operation === 'not') {
+            return new NumberClass(!op);
+        } else if (this.operation === 'increase') {
+            return new NumberClass(this.op.resolve(scope).value + 1);
         }
     }
 }
