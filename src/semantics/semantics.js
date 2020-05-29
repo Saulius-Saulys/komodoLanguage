@@ -1,6 +1,7 @@
 const AST = require('../ast/ast.js');
 const arithmeticSemantics = require('./arithmeticSemantic');
 const variableSemantics = require('./variableSemantic');
+const structureSemantics = require('./structureSemantic');
 
 module.exports.generate = function (semantics) {
     var ASTBuilder = semantics.addOperation('resolve', {
@@ -32,10 +33,6 @@ module.exports.generate = function (semantics) {
             return new AST.Body(body.resolve())
         },
 
-        FunctionDefinition: function(name, _1, params, _2, _3, body) {
-            return new AST.FunctionDef(name.resolve(), params.resolve(), body.resolve())
-        },
-
         Return: function(_1, exprs, _2) {
             return new AST.Return(exprs.resolve())
         },
@@ -44,25 +41,10 @@ module.exports.generate = function (semantics) {
             return params.asIteration().resolve()
         },
 
-        FunctionCall: function(name, _1, args, _2) {
-            return new AST.FunctionCall(name.resolve(), args.resolve())
-        },
-
         Arguments: function(args) {
             return args.asIteration().resolve()
         },
-
-        If: function(_1, condition, _2, _3, thenBody, _4, elseBody) { 
-            return new AST.IfStatement(condition.resolve(), thenBody.resolve(), elseBody ? elseBody.resolve()[0] : null) 
-        },
-
-        For: function(_1, _2, assignment, condition, _3, increment, _5, loopBody) {
-            return new AST.ForLoop(assignment.resolve(), condition.resolve(), increment.resolve(), loopBody.resolve())
-        },
-
-        While: function(_1, condition, body) {
-            return new AST.WhileLoop(condition.resolve(), body.resolve())
-        },
+        ...structureSemantics,
         ...arithmeticSemantics,
         ...variableSemantics
     });

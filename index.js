@@ -17,4 +17,4 @@ const matchResult = grammar.match(
 
 const tree = astBuilder(matchResult).resolve();
 
-tree.resolve(systemicFunctions.globalScope);
+tree.resolve(systemicFunctions.globalContext);
