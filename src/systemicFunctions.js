@@ -1,5 +1,6 @@
 const AST = require('./ast/ast.js');
 const CryptoJS = require('crypto-js');
+const fs = require('fs');
 
 const Context = AST.Context;
 const Symbol = AST.SymbolClass;
@@ -41,6 +42,18 @@ globalContext.setSymbol(new Symbol("toDouble"), function (x) {
 
 globalContext.setSymbol(new Symbol("decrypt"), function (x) {
     return new VariableClass("cypher_Decrypt", decrypt(x.value));
+});
+
+globalContext.setSymbol(new Symbol("writeFile"), function (x, filePath) {
+    fs.writeFile(filePath.value, x.value, function (err) {
+        new Error("failed to append");
+    });
+});
+
+globalContext.setSymbol(new Symbol("appendFile"), function (x, filePath) {
+    fs.appendFile(filePath.value, x.value + "\n", function (err) {
+        new Error("failed to append");
+    });
 });
 
 module.exports={globalContext}

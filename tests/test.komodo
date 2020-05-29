@@ -62,11 +62,22 @@ int n = 7;
 log("Fibonacci using while")
 log(loopWhileFibonacci(n))
 
+appendFile("Fibonacci using while", "./appendTest.txt")
+appendFile(loopWhileFibonacci(n), "./appendTest.txt")
+
 log("Fibonacci using for")
 log(loopFibonacci(n))
 
+appendFile("Fibonacci using for", "./appendTest.txt")
+appendFile(loopFibonacci(n), "./appendTest.txt")
+
 log("Fibonacci using recurrsion")
 log(recursiveFibonacci(n))
+
+appendFile("Fibonacci using recurrsion", "./appendTest.txt")
+appendFile(recursiveFibonacci(n), "./appendTest.txt")
+
+writeFile("testText", "./writeTest.txt")
 
 # Comment #
 logLine("Log line")
@@ -79,3 +90,4 @@ logLine(decrypt(encryptedBoi))
 cypher encryptedNumber = __5__;
 logLine(encryptedNumber)
 logLine(decrypt(encryptedNumber))
+
