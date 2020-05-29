@@ -1,36 +1,14 @@
 const CryptoJS = require('crypto-js');
 const structureAst = require('./structureAst');
+const CONST = require('./const');
+
 const values = [];
 
 const encrypt = (value) => CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(value));
 
-class Context {
-    constructor(parentContext) {
-        this.store = {};
-        this.parentContext = parentContext ? parentContext : null;
-    }
-
-    passContextToChild() {
-        return new Context(this);
-    }
-
-    setSymbol(symbol, obj) {
-        this.store[symbol.name] = obj;
-        return this.store[symbol.name];
-    }
-
-    getSymbol(name) {
-        if (this.store[name]) {
-            return this.store[name];
-        } else {
-            return this.parentContext.getSymbol(name);
-        }
-    }
-}
-
 class VariableClass {
     constructor(type, value) {
-        if (type === "cypher") {
+        if (type === CONST.TYPES.CYPHER) {
             this.value = encrypt(value);
             this.type = type;
         }
@@ -55,16 +33,16 @@ class Assignment {
     resolve(context) {
         const index = values.findIndex((a) => a.name == this.symbol.name);
         if (
-            this.type !== "cypher" &&
+            this.type !== CONST.TYPES.CYPHER &&
             (
                 (
-                    this.type === "double" ||
-                    this.type === "int"
+                    this.type === CONST.TYPES.DOUBLE ||
+                    this.type === CONST.TYPES.INT
                 ) &&
                 isNaN(this.value.resolve(context).value)
             ) ||
             (
-                this.type === "string" &&
+                this.type === CONST.TYPES.STRING &&
                 !isNaN(this.value.resolve(context).value)
             )
         ) {
@@ -94,7 +72,7 @@ class Operation {
     }
 
     resolve(context) {
-        return new VariableClass("bool", eval(`${this.left.resolve(context).value} ${this.operation} ${this.right.resolve(context).value}`));
+        return new VariableClass(CONST.TYPES.BOOL, eval(`${this.left.resolve(context).value} ${this.operation} ${this.right.resolve(context).value}`));
     }
 }
 
@@ -116,10 +94,10 @@ class Op {
     }
 
     resolve(context) {
-        if (this.operation === 'not') {
-            return new VariableClass("bool", !op);
-        } else if (this.operation === 'increase') {
-            return new VariableClass("int", this.op.resolve(context).value + 1);
+        if (this.operation === CONST.OPERATORS.NOT) {
+            return new VariableClass(CONST.TYPES.BOOL, !op);
+        } else if (this.operation === CONST.OPERATORS.INC) {
+            return new VariableClass(CONST.TYPES.INT, this.op.resolve(context).value + 1);
         }
     }
 }
@@ -131,6 +109,30 @@ class Return {
 
     resolve(context) {
         return this.returnable.resolve(context)
+    }
+}
+
+class Context {
+    constructor(parentContext) {
+        this.store = {};
+        this.parentContext = parentContext ? parentContext : null;
+    }
+
+    passContextToChild() {
+        return new Context(this);
+    }
+
+    setSymbol(symbol, obj) {
+        this.store[symbol.name] = obj;
+        return this.store[symbol.name];
+    }
+
+    getSymbol(name) {
+        if (this.store[name]) {
+            return this.store[name];
+        } else {
+            return this.parentContext.getSymbol(name);
+        }
     }
 }
 
