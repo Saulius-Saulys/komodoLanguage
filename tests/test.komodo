@@ -3,7 +3,7 @@ log("------------------ Fibonacci Example ------------------")
 recursiveFibonacci (i) => {
     (i <= 2) ? {
         return 1;
-    } : {
+    } : ž
         return recursiveFibonacci(i-1) + recursiveFibonacci(i-2);
     }
 }

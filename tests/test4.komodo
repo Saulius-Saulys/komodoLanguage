@@ -1,0 +1,6 @@
+# conditional statements#
+
+a = false;
+log(a)
+(a == true) ? {log("Not lying")} : {log("Wrong move brother")}
+  

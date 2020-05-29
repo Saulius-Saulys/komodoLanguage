@@ -1,0 +1,41 @@
+# Test for Fibonacci with recurrsion and while loop, also test for writing/appending to file#
+recursiveFibonacci (i) => {
+    (i <= 2) ? {
+        return 1;
+    } : {
+        return recursiveFibonacci(i-1) + recursiveFibonacci(i-2);
+    }
+}
+
+
+
+loopFibonacci (n) => {
+
+    int previouspreviousNumber = 0;
+    int previousNumber = 0;
+    int currentNumber = 1;
+    int i = 1;
+
+    while(i < n) {
+        previouspreviousNumber = previousNumber;
+        previousNumber = currentNumber;
+        currentNumber = previouspreviousNumber + previousNumber;
+        i = i + 1;
+    }
+
+    return currentNumber;
+}
+
+int n = 7;
+
+log("Fibonacci using for")
+log(loopFibonacci(n))
+
+appendFile("Fibonacci using for", "./appendTest.txt")
+appendFile(loopFibonacci(n), "./appendTest.txt")
+
+log("Fibonacci using recurrsion")
+log(recursiveFibonacci(n))
+
+appendFile("Fibonacci using recurrsion", "./appendTest.txt")
+appendFile(recursiveFibonacci(n), "./appendTest.txt")

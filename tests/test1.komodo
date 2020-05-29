@@ -1,0 +1,19 @@
+# Variable test: declaration, error catching, log out of variables#
+
+int a = 10;
+log(a)
+
+string myString = "I love bacon";
+log(myString)
+
+# This will show a value is not supported by the of int#
+# int error = "Oh boi";#
+
+# assigning new value to variable shouldISleep#
+shouldISleep = "false";
+log(shouldISleep)
+
+## encrypted a variable and later decrypted it safely
+cypher muchSecurity = __I want to be safe__;
+log(muchSecurity)
+log(decrypt(muchSecurity))

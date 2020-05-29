@@ -1,0 +1,17 @@
+# Log variables, to method demonstration#
+
+a = 150;
+shrek = "Ogre who?";
+
+log(a)
+log(shrek)
+
+log(toString(a))
+
+log(toInt(a))
+# this would throw an error that unable to parse to int#
+#log(toInt(shrek))#
+
+log(toDouble(a))
+# this would throw an error that unable to parse to double#
+#log(toDouble(shrek))#

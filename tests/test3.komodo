@@ -1,0 +1,20 @@
+# For and while loops and function calls with return statements#
+
+# This will print 10 times the words Let's rock and roll, Boi! and increment i by 1 every loop#
+whileLoopsForDayz (n) => {
+    int i = 0;
+    while(i < n) {
+        log("Let's rock and roll, Boi!")
+        i = i + 1;
+    }
+    return i;
+}
+
+int n = 10;
+int result = whileLoopsForDayz(n);
+log(result)
+
+# This will print 9 times the words Programming is easy with StackOverflow using the for loop
+for (int i = 1; i < n; i++) {
+        log("Programming is easy with StackOverflow")
+    }
