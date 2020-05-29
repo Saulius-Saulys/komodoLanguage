@@ -2,3 +2,21 @@ Fibonacci using for
 13
 Fibonacci using recurrsion
 13
+Fibonacci using while
+Fibonacci using for loop
+13
+13
+13
+Fibonacci using recurrsion
+Fibonacci using while
+13
+13
+Fibonacci using for loop
+13
+Fibonacci using recurrsion
+Fibonacci using while
+13
+Fibonacci using for loop
+13
+Fibonacci using recurrsion
+13

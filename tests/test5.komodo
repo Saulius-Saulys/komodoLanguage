@@ -26,12 +26,29 @@ loopFibonacci (n) => {
     return currentNumber;
 }
 
+loopForFibonacci(n) => {
+
+    int previouspreviousNumber = 0;
+    int previousNumber = 0;
+    int currentNumber = 1;
+
+    for (int i = 1; i < n; i++) {
+        previouspreviousNumber = previousNumber;
+        previousNumber = currentNumber;
+        currentNumber = previouspreviousNumber + previousNumber;
+    }
+
+    return currentNumber;
+}
+
 int n = 7;
 
-log("Fibonacci using for")
+log("Fibonacci using while")
 log(loopFibonacci(n))
+log("Fibonacci using for")
+log(loopForFibonacci(n))
 
-appendFile("Fibonacci using for", "./appendTest.txt")
+appendFile("Fibonacci using while", "./appendTest.txt")
 appendFile(loopFibonacci(n), "./appendTest.txt")
 
 log("Fibonacci using recurrsion")
@@ -39,3 +56,6 @@ log(recursiveFibonacci(n))
 
 appendFile("Fibonacci using recurrsion", "./appendTest.txt")
 appendFile(recursiveFibonacci(n), "./appendTest.txt")
+
+appendFile("Fibonacci using for loop", "./appendTest.txt")
+appendFile(loopForFibonacci(n), "./appendTest.txt")
